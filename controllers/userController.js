@@ -2,10 +2,9 @@ const User = require("../models/user");
 
 // View Users
 exports.view = (req, res) => {
-  let removedUser = req.query.removed;
+  const removedUser = req.query.removed;
   User.fetchAll()
     .then((rows) => {
-      console.table(rows);
       res.render("home", { rows, removedUser });
     })
     .catch((err) => {
@@ -17,7 +16,6 @@ exports.view = (req, res) => {
 exports.find = (req, res) => {
   User.findUser(req.body.search)
     .then((rows) => {
-      console.table(rows);
       res.render("home", { rows });
     })
     .catch((err) => {
@@ -33,11 +31,9 @@ exports.form = (_, res) => {
 // Add user
 exports.create = (req, res) => {
   const { first_name, last_name, email, phone, comments } = req.body;
-  const user = new User(first_name, last_name, email, phone, comments);
-  user
+  new User(first_name, last_name, email, phone, comments)
     .insertUser()
-    .then((rows) => {
-      console.table(rows);
+    .then(() => {
       res.render("add-user", { alert: "User added successfully." });
     })
     .catch((err) => {
@@ -49,7 +45,6 @@ exports.create = (req, res) => {
 exports.edit = (req, res) => {
   User.findById(req.params.id)
     .then((rows) => {
-      console.table(rows);
       res.render("edit-user", { rows });
     })
     .catch((err) => {
@@ -64,7 +59,6 @@ exports.update = (req, res) => {
   updatedUser
     .updateUser(req.params.id)
     .then((rows) => {
-      console.table(rows);
       res.render("edit-user", {
         rows,
         alert: `${first_name} has been updated.`
@@ -78,21 +72,18 @@ exports.update = (req, res) => {
 // Hide a user
 exports.delete = (req, res) => {
   User.deleteUser(req.params.id)
-    .then((rows) => {
-      console.table(rows);
-      let removedUser = encodeURIComponent("User successfully removed.");
-      res.redirect("/?removed=" + removedUser);
+    .then(() => {
+      res.redirect("/?removed=1");
     })
     .catch((err) => {
       console.error(err);
     });
 };
 
-// View Users
+// View user info
 exports.viewall = (req, res) => {
   User.findById(req.params.id)
     .then((rows) => {
-      console.table(rows);
       res.render("view-user", { rows });
     })
     .catch((err) => {
