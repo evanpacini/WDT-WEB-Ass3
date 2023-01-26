@@ -1,6 +1,6 @@
-<% if (locals.removedUser) { %>
+<% if (locals.action) { %>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-  User has been removed.
+  User has been <%= action %>.
   <button
     type="button"
     class="btn-close"
@@ -53,14 +53,28 @@
           class="btn btn-light btn-small"
           ><i class="bi bi-pencil"></i> Edit</a
         >
-        <% if (row.status !== 'removed') { %>
+        <% if (row.status === 'none') { %>
+        <a
+          href="/activate/<%= row.id %>"
+          type="button"
+          class="btn btn-light btn-small"
+          ><i class="bi bi-person-check"></i> Activate</a
+        >
+        <% } if (row.status === 'active') { %>
+        <a
+          href="/deactivate/<%= row.id %>"
+          type="button"
+          class="btn btn-light btn-small"
+          ><i class="bi bi-person-dash"></i> Deactivate</a
+        >
+        <% } if (row.status !== 'removed') { %>
         <a
           href="/delete/<%= row.id %>"
           type="button"
           class="btn btn-light btn-small"
           ><i class="bi bi-person-x"></i> Delete</a
         >
-        <% } %> <% if (row.status === 'removed') { %>
+        <% } if (row.status === 'removed') { %>
         <a
           href="/restore/<%= row.id %>"
           type="button"

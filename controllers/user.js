@@ -4,7 +4,10 @@ const User = require("../models/user");
 exports.view = (req, res) => {
   User.fetchAll()
     .then((rows) => {
-      res.render("home", { rows, removedUser: req.query.removed });
+      res.render("home", {
+        rows,
+        action: req.query.action
+      });
     })
     .catch((err) => {
       console.error(err);
@@ -70,9 +73,9 @@ exports.update = (req, res) => {
 
 // Hide a user
 exports.delete = (req, res) => {
-  User.deleteUser(req.params.id)
+  User.updateUserStatus(req.params.id, "removed")
     .then(() => {
-      res.redirect("/?removed=1");
+      res.redirect("/?action=deleted");
     })
     .catch((err) => {
       console.error(err);
@@ -80,7 +83,7 @@ exports.delete = (req, res) => {
 };
 
 // View user info
-exports.view = (req, res) => {
+exports.viewInfo = (req, res) => {
   User.findById(req.params.id)
     .then((rows) => {
       res.render("view-user", { rows });
@@ -92,9 +95,31 @@ exports.view = (req, res) => {
 
 // Restore a user
 exports.restore = (req, res) => {
-  User.restore(req.params.id)
-    .then((rows) => {
-      res.render("home", { rows });
+  User.updateUserStatus(req.params.id, "none")
+    .then(() => {
+      res.redirect("/?action=restored");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// Activate a user
+exports.activate = (req, res) => {
+  User.updateUserStatus(req.params.id, "active")
+    .then(() => {
+      res.redirect("/?action=activated");
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// Deactivate a user
+exports.deactivate = (req, res) => {
+  User.updateUserStatus(req.params.id, "none")
+    .then(() => {
+      res.redirect("/?action=deactivated");
     })
     .catch((err) => {
       console.error(err);

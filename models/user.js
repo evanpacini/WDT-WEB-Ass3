@@ -21,7 +21,7 @@ class User {
   static fetchAll() {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM user WHERE status <> "removed"',
+        'SELECT * FROM user WHERE status != "removed"',
         (err, rows) => {
           if (err) reject(err);
           else resolve(rows);
@@ -104,12 +104,12 @@ class User {
     });
   }
 
-  // Delete (hide) user
-  static deleteUser(id) {
+  // Update user status
+  static updateUserStatus(id, status) {
     return new Promise((resolve, reject) => {
       connection.query(
         "UPDATE user SET status = ? WHERE id = ?",
-        ["removed", id],
+        [status, id],
         (err, rows) => {
           if (err) reject(err);
           else resolve(rows);

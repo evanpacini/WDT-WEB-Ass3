@@ -9,8 +9,10 @@ router.get("/add", userController.form);
 router.post("/add", userController.create);
 router.get("/edit/:id", userController.edit);
 router.post("/edit/:id", userController.update);
-router.get("/view/:id", userController.view);
+router.get("/view/:id", userController.viewInfo);
 router.get("/delete/:id", userController.delete);
-router.get("/restor/:id", userController.restore);
+router.get("/restore/:id", userController.restore);
+router.get("/activate/:id", userController.activate);
+router.get("/deactivate/:id", userController.deactivate);
 
 module.exports = router;
