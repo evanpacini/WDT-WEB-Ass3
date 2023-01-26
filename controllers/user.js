@@ -2,10 +2,9 @@ const User = require("../models/user");
 
 // View Users
 exports.view = (req, res) => {
-  const removedUser = req.query.removed;
   User.fetchAll()
     .then((rows) => {
-      res.render("home", { rows, removedUser });
+      res.render("home", { rows, removedUser: req.query.removed });
     })
     .catch((err) => {
       console.error(err);
@@ -81,10 +80,21 @@ exports.delete = (req, res) => {
 };
 
 // View user info
-exports.viewall = (req, res) => {
+exports.view = (req, res) => {
   User.findById(req.params.id)
     .then((rows) => {
       res.render("view-user", { rows });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// Restore a user
+exports.restore = (req, res) => {
+  User.restore(req.params.id)
+    .then((rows) => {
+      res.render("home", { rows });
     })
     .catch((err) => {
       console.error(err);

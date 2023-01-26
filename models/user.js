@@ -21,7 +21,7 @@ class User {
   static fetchAll() {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT * FROM user WHERE status = "active"',
+        'SELECT * FROM user WHERE status <> "removed"',
         (err, rows) => {
           if (err) reject(err);
           else resolve(rows);

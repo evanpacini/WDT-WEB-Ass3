@@ -19,7 +19,7 @@
 <form
   class="row g-3 needs-validation"
   method="POST"
-  action="/edituser/<%= row.id %>"
+  action="/edit/<%= row.id %>"
   novalidate
 >
   <%- include('./partials/user-form.ejs', {row:row}) %>

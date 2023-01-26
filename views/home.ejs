@@ -34,7 +34,7 @@
   </thead>
   <tbody>
     <% rows.forEach((row) => { %>
-    <tr>
+    <tr class="<%= (row.status === 'active')?'bg-success':''%>">
       <th scope="row"><%= row.id %></th>
       <td><%= row.first_name %></td>
       <td><%= row.last_name %></td>
@@ -42,20 +42,32 @@
       <td><%= row.phone %></td>
       <td class="text-end">
         <a
-          href="/viewuser/<%= row.id %>"
+          href="/view/<%= row.id %>"
           type="button"
           class="btn btn-light btn-small"
           ><i class="bi bi-eye"></i> View</a
         >
         <a
-          href="/edituser/<%= row.id %>"
+          href="/edit/<%= row.id %>"
           type="button"
           class="btn btn-light btn-small"
           ><i class="bi bi-pencil"></i> Edit</a
         >
-        <a href="/<%= row.id %>" type="button" class="btn btn-light btn-small"
+        <% if (row.status !== 'removed') { %>
+        <a
+          href="/delete/<%= row.id %>"
+          type="button"
+          class="btn btn-light btn-small"
           ><i class="bi bi-person-x"></i> Delete</a
         >
+        <% } %> <% if (row.status === 'removed') { %>
+        <a
+          href="/restore/<%= row.id %>"
+          type="button"
+          class="btn btn-light btn-small"
+          ><i class="bi bi-person-check"></i> Restore</a
+        >
+        <% } %>
       </td>
     </tr>
     <% }); %>
